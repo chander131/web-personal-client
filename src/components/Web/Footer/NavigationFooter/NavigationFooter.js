@@ -1,7 +1,15 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
 import { Row, Col } from 'antd';
-import { AppstoreOutlined, BookOutlined, CodeOutlined, DatabaseOutlined, HddOutlined, RightOutlined, UserOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import {
+    AppstoreOutlined,
+    BookOutlined,
+    CodeOutlined,
+    DatabaseOutlined,
+    HddOutlined,
+    RightOutlined,
+    UserOutlined,
+} from '@ant-design/icons';
 
 import './NavigationFooter.scss';
 

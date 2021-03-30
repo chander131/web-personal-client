@@ -10,7 +10,6 @@ import './AddUserForm.scss';
 export default function AddUserForm(props) {
     const { setIsVisibleModal, setReloadUsers } = props;
     const [userData, setUserData] = useState({});
-    const { Option } = Select;
 
     const addUser = e => {
         e.preventDefault();
@@ -52,6 +51,7 @@ export default function AddUserForm(props) {
 
 function AddForm(props) {
     const { userData, setUserData, addUser } = props;
+    const { Option } = Select;
 
     return (
         <Form className='form-add' onSubmitCapture={addUser}>
