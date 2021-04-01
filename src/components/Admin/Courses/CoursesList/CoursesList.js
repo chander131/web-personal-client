@@ -1,12 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 import { List, Button, Modal as ModalAntd, notification } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import DragSortableList from 'react-drag-sortable';
 
 import Modal from '../../../Modal';
+import AddEditCourseForm from '../AddEditCourseForm';
 
 import { getAccessTokenApi } from '../../../../api/auth';
-import { getCourseDataUdemyApi, deleteCourseApi } from '../../../../api/course';
+import { getCourseDataUdemyApi, deleteCourseApi, updateCourseApi } from '../../../../api/course';
 
 import './CoursesList.scss';
 
@@ -20,7 +22,13 @@ export default function CoursesList(props) {
     const [modalContent, setModalContent] = useState(null);
 
     const onSort = (sortedList, dropEvent) => {
-        console.log("🚀 ~ file: CoursesList.js ~ line 22 ~ onSort ~ sortedList", sortedList)
+        const accessToken = getAccessTokenApi();
+
+        sortedList.forEach(item => {
+            const { _id } = item.content.props.course;
+            const order = item.rank;
+            updateCourseApi(accessToken, _id, { order });
+        });
     };
 
     const deleteCourse = course => {
@@ -44,6 +52,29 @@ export default function CoursesList(props) {
         });
     };
 
+    const addCourseModal = () => {
+        setIsVisibleModal(true);
+        setModalTitle('Creando nuevo curso');
+        setModalContent(
+            <AddEditCourseForm
+                setIsVisibleModal={setIsVisibleModal}
+                setReloadCourses={setReloadCourses}
+            />
+        );
+    };
+
+    const editCourseModal = course => {
+        setIsVisibleModal(true);
+        setModalTitle('Actualizando curso');
+        setModalContent(
+            <AddEditCourseForm
+                course={course}
+                setIsVisibleModal={setIsVisibleModal}
+                setReloadCourses={setReloadCourses}
+            />
+        );
+    };
+
     useEffect(() => {
         const listCourseArray = [];
         courses.forEach(course => {
@@ -52,6 +83,7 @@ export default function CoursesList(props) {
                     <Course
                         course={course}
                         deleteCourse={deleteCourse}
+                        editCourseModal={editCourseModal}
                     />
                 ),
             });
@@ -62,7 +94,7 @@ export default function CoursesList(props) {
     return (
         <div className='courses-list'>
             <div className='courses-list__header'>
-                <Button type='primary' onClick={() => { }}>
+                <Button type='primary' onClick={addCourseModal}>
                     Nuevo curso
                 </Button>
             </div>
@@ -75,19 +107,27 @@ export default function CoursesList(props) {
                 )}
                 <DragSortableList items={listCourses} onSort={onSort} type='vertical' />
             </div>
+            <Modal
+                key='courses-courses-list'
+                title={modalTitle}
+                isVisible={isVisibleModal}
+                setIsVisible={setIsVisibleModal}
+            >
+                {modalContent}
+            </Modal>
         </div>
     )
 }
 
 function Course(props) {
-    const { course, deleteCourse } = props;
+    const { course, deleteCourse, editCourseModal } = props;
     const [courseData, setCourseData] = useState(null);
 
     useEffect(() => {
         getCourseDataUdemyApi(course.idCourse).then(response => {
             if (response.code !== 200) notification.warning({ message: `El curso con el ${course.idCourse} no se ha encontrado.` });
             setCourseData(response.data);
-        })
+        });
     }, [course]);
 
     return (
@@ -95,7 +135,7 @@ function Course(props) {
             {!courseData ? null : (
                 <List.Item
                     actions={[
-                        <Button type='primary' onClick={_ => { }}>
+                        <Button type='primary' onClick={() => editCourseModal(course)}>
                             <EditOutlined />
                         </Button>,
                         <Button type='danger' onClick={() => deleteCourse(course)}>

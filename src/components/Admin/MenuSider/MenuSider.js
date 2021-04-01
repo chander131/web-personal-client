@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Layout, Menu, } from 'antd';
-import { BookOutlined, HomeOutlined, MenuOutlined, UserOutlined } from '@ant-design/icons';
+import { BookOutlined, HomeOutlined, MenuOutlined, MessageOutlined, UserOutlined } from '@ant-design/icons';
 
 import './MenuSider.scss';
 
@@ -9,8 +9,8 @@ function MenuSider(props) {
     const { menuCollapsed, location: { pathname } } = props;
     const { Sider } = Layout;
 
-    return(
-        <Sider collapsed={menuCollapsed}  className='admin-sider'>
+    return (
+        <Sider collapsed={menuCollapsed} className='admin-sider'>
             <Menu theme='dark' mode='inline' defaultSelectedKeys={['/admin']} selectedKeys={[pathname]}>
                 <Menu.Item key='/admin'>
                     <Link to={'/admin'}>
@@ -34,6 +34,12 @@ function MenuSider(props) {
                     <Link to={'/admin/courses'}>
                         <BookOutlined />
                         <span className='nav-text'>Cursos</span>
+                    </Link>
+                </Menu.Item>
+                <Menu.Item key='/admin/blog'>
+                    <Link to={'/admin/blog'}>
+                        <MessageOutlined />
+                        <span className='nav-text'>Blog</span>
                     </Link>
                 </Menu.Item>
             </Menu>

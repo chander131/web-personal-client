@@ -46,7 +46,7 @@ export function activateMenuApi(token, menuId, status) {
 
 export function addMenuApi(token, menu) {
     const url = `${basePath}/${apiVersion}/add-menu`;
-    
+
     const params = {
         method: 'POST',
         headers: {
@@ -64,7 +64,7 @@ export function addMenuApi(token, menu) {
 
 export function deleteMenuApi(token, menuId) {
     const url = `${basePath}/${apiVersion}/delete-menu/${menuId}`;
-    
+
     const params = {
         method: 'DELETE',
         headers: {
