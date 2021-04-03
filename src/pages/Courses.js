@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Spin, notification, message } from 'antd';
+import { Row, Col, Spin, notification } from 'antd';
 import { Helmet } from 'react-helmet';
 
 import CoursesList from '../components/Web/Courses/CoursesList';

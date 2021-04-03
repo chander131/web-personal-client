@@ -4,6 +4,10 @@ import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 
 import Modal from '../../../components/Modal';
+import PostsList from '../../../components/Admin/Blog/PostList';
+import AddEditPostForm from '../../../components/Admin/Blog/AddEditPostForm';
+import Pagination from '../../../components/Pagination';
+
 import { getPostsApi } from '../../../api/post';
 
 import './Blog.scss';
@@ -17,13 +21,37 @@ function Blog(props) {
     const { page = 1 } = queryString.parse(location.search);
     const [isVisibleModal, setIsVisibleModal] = useState(false);
 
+    const editPost = post => {
+        setModalTitle('Editar post');
+        setModalContent(
+            <AddEditPostForm
+                setIsVisibleModal={setIsVisibleModal}
+                setReloadPosts={setReloadPosts}
+                post={post}
+            />
+        );
+        setIsVisibleModal(true);
+    };
+
+    const addPost = () => {
+        setModalTitle('Creando nuevo post');
+        setModalContent(
+            <AddEditPostForm
+                setIsVisibleModal={setIsVisibleModal}
+                setReloadPosts={setReloadPosts}
+                post={null}
+            />
+        );
+        setIsVisibleModal(true);
+    };
+
     useEffect(() => {
         getPostsApi(12, page)
             .then(response => {
                 if (response?.code !== 200) {
                     notification.warning({ message: response.message });
                 } else {
-                    setPosts(response.posts.docs);
+                    setPosts(response.posts);
                 }
             })
             .catch(() => notification.error({ message: 'Error del servidor.' }));
@@ -31,23 +59,32 @@ function Blog(props) {
     }, [page, reloadPosts]);
 
     return (
-        <div className='blog'>
-            <div className='blog__add-post'>
-                <Button type='primary'>
-                    Nuevo post
-                </Button>
-            </div>
+        <>
+            {
+                !posts ? null : (
+                    <div className='blog'>
+                        <div className='blog__add-post'>
+                            <Button type='primary' onClick={addPost}>
+                                Nuevo post
+                            </Button>
+                        </div>
 
-            <h1>PostList...</h1>
-            <h2>Paginacion.......</h2>
+                        <PostsList posts={posts} setReloadPosts={setReloadPosts} editPost={editPost} />
+                        <Pagination posts={posts} location={location} history={history} />
 
-            <Modal
-                title={modalTitle}
-                isVisible={isVisibleModal}
-                setIsVisible={setIsVisibleModal}
-                width='75%'
-            />
-        </div>
+                        <Modal
+                            title={modalTitle}
+                            isVisible={isVisibleModal}
+                            setIsVisible={setIsVisibleModal}
+                            width='75%'
+                        >
+                            {modalContent}
+                        </Modal>
+                    </div>
+
+                )
+            }
+        </>
     );
 };
 

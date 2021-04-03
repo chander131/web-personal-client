@@ -1,0 +1,47 @@
+@import '../../../../scss/index.scss';
+
+.posts-list-web {
+    display: flex;
+    flex-direction: column;
+    margin: 50px 0;
+
+    > h1 {
+        text-align: center;
+        color: $font-light;
+        margin: 0 0 50px 0;
+    }
+
+    .post {
+        color: $font-light;
+
+        a {
+            width: fill-available;
+            width: -moz-fill-available;
+            width: -moz-fill-available;
+        }
+
+        &__date {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            background-color: $primary-color;
+            margin-right: 20px;
+            border-radius: 5px;
+            text-transform: capitalize;
+            padding: 5px 15px;
+        }
+
+        .ant-list-item-meta-title {
+            color: $font-light;
+            font-size: 16px;
+
+            &:hover {
+                color: $primary-color-dark;
+            }
+        }
+    }
+
+    @media only screen and (max-width: 425px) and (min-width: $media-breackpoint-up-xs) {  
+        width: 90vw;
+    }
+}

@@ -28,4 +28,18 @@
             width: 200px;
         }
     }
+
+    @media only screen and (max-width: 425px) and (min-width: $media-breackpoint-up-xs) {  
+        width: 100vw;
+        &__logo {
+            padding: 5px;
+    
+            img {
+                width: 100px;
+            }
+        }
+        .social-links {
+            display: none;
+        }
+    }
 }

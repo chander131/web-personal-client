@@ -47,4 +47,11 @@
             }
         }
     }
+
+    @media only screen and (max-width: 425px) and (min-width: $media-breackpoint-up-xs) {
+        &__course {
+            width: 95vw;
+        }
+    }
+
 }

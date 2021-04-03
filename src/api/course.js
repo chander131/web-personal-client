@@ -13,8 +13,16 @@ export function getCourseDataUdemyApi(id) {
     const baseUrl = `https://www.udemy.com/api-2.0/courses/${id}`;
     const coursesParams = `?fields[course]=title,headline,url,price,image_480x270`;
     const url = baseUrl + coursesParams;
+    const params = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            // Authorization: 'Basic ' + 'kHaVpaUdbQWhIRQ8zGWGCXSM3OrhJz5kWPuCpQzE:XJlS6qNc4koz6VjSd3eAjGc3kZDOJVPL94ZPXoMMJGfLghVWlef44hcJZpFoZ97XiN09mnTLRy53IonCesMOnCVD6hYaJpwj8uw5FGXTWm5oSNtePi7m6jiWGhQPBv0L',
+            // Authorization: 'Basic ' + btoa('kHaVpaUdbQWhIRQ8zGWGCXSM3OrhJz5kWPuCpQzE:XJlS6qNc4koz6VjSd3eAjGc3kZDOJVPL94ZPXoMMJGfLghVWlef44hcJZpFoZ97XiN09mnTLRy53IonCesMOnCVD6hYaJpwj8uw5FGXTWm5oSNtePi7m6jiWGhQPBv0L'),
+        },
+    }
 
-    return fetch(url)
+    return fetch(url, params)
         .then(async response => {
             return { code: response.status, data: await response.json() }
         }).then(result => result)

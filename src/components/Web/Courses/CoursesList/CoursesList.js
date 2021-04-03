@@ -46,6 +46,7 @@ function Course(props) {
                 }
             })
             .catch(() => notification.error({ message: 'Error del servidor, intentelo mas tarde.' }));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [course]);
 
     return (
